@@ -82,11 +82,11 @@ public class ArtistTopTen extends Activity {
 
                 Tracks tracks = spotify.getArtistTopTrack(params[0], map);
 
-                tracksList  = tracks.tracks;
+                tracksList = tracks.tracks;
 
-            }catch (RetrofitError e){
-                Toast.makeText(ArtistTopTen.this,"UnkownHostException! Are You Connected to the Internet?",Toast.LENGTH_SHORT).show();
-                Log.e("Exception",e.toString());
+            } catch (RetrofitError e) {
+//                Toast.makeText(ArtistTopTen.this, "UnkownHostException! Are You Connected to the Internet?", Toast.LENGTH_SHORT).show();
+                Log.e("Exception", e.toString());
             }
 
             return tracksList;
@@ -96,13 +96,14 @@ public class ArtistTopTen extends Activity {
         protected void onPostExecute(List<Track> tracks) {
             super.onPostExecute(tracks);
 
-            if (tracks.size() != 0) {
+            if (tracks != null && tracks.size() != 0) {
 
                 TopTenAdapter adapter = new TopTenAdapter(ArtistTopTen.this, tracks);
                 listTopTen.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
             } else {
+
                 Toast.makeText(ArtistTopTen.this, "No Top Tracks", Toast.LENGTH_SHORT).show();
                 listTopTen.setAdapter(null);
                 listTopTen.refreshDrawableState();

@@ -36,6 +36,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState==null){
+            Log.d("!!!!!","NULL");
+        }else{
+            Log.d("!!!!!","NOT NULL");
+        }
+
         setContentView(R.layout.activity_main);
 
         etArtist = (EditText) findViewById(R.id.etArtist);
@@ -115,19 +122,22 @@ public class MainActivity extends Activity {
         @Override
         protected List<Artist> doInBackground(String... params) {
             ArtistsPager results = null;
+            List<Artist> artistInfo = null;
             try {
 
                 SpotifyApi api = new SpotifyApi();
                 SpotifyService spotify = api.getService();
 
                 results = spotify.searchArtists(params[0]);
+                artistInfo = results.artists.items;
 
             } catch (Exception e) {
-                Toast.makeText(MainActivity.this, "UnkownHostException! Are You Connected to the Internet?", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MainActivity.this, "UnkownHostException! Are You Connected to the Internet?", Toast.LENGTH_SHORT).show();
                 Log.e("Exception", e.toString());
+                return null;
             }
 
-            List<Artist> artistInfo = results.artists.items;
+            Log.d("!!!",artistInfo.size()+"");
 
             return artistInfo;
         }
@@ -136,7 +146,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);
 
-            if (artists.size() != 0) {
+            if (artists!=null && artists.size() != 0) {
 
                 MyAdapter adapter = new MyAdapter(MainActivity.this, artists);
                 listSearchResult.setAdapter(adapter);
