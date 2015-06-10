@@ -22,6 +22,7 @@ import kaaes.spotify.webapi.android.models.Tracks;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 
 /**
  * Created by Pradeep on 6/7/15.
@@ -67,23 +68,25 @@ public class ArtistTopTen extends Activity {
         protected List<Track> doInBackground(String... params) {
 
 
-            Log.d("!!!!!", "!!!!!!!!!");
+            List<Track> tracksList = null;
 
-            SpotifyApi api = new SpotifyApi();
+            try {
 
-            SpotifyService spotify = api.getService();
+                SpotifyApi api = new SpotifyApi();
 
-            HashMap<String, Object> map = new HashMap<>();
+                SpotifyService spotify = api.getService();
 
-            map.put("country", "US");
+                HashMap<String, Object> map = new HashMap<>();
 
-            Tracks tracks = spotify.getArtistTopTrack(params[0], map);
+                map.put("country", "US");
 
-            List<Track> tracksList = tracks.tracks;
+                Tracks tracks = spotify.getArtistTopTrack(params[0], map);
 
-            for (int i = 0; i < tracksList.size(); i++) {
+                tracksList  = tracks.tracks;
 
-                Log.d("!!!!!!", tracksList.get(i).name);
+            }catch (RetrofitError e){
+                Toast.makeText(ArtistTopTen.this,"UnkownHostException! Are You Connected to the Internet?",Toast.LENGTH_SHORT).show();
+                Log.e("Exception",e.toString());
             }
 
             return tracksList;
