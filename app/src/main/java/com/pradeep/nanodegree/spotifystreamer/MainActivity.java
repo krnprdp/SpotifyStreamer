@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -48,8 +49,8 @@ public class MainActivity extends Activity {
 
                 Intent in = new Intent(MainActivity.this, ArtistTopTen.class);
 
-                in.putExtra("SpotifyID",artist.id);
-                in.putExtra("ArtistName",artist.name);
+                in.putExtra("SpotifyID", artist.id);
+                in.putExtra("ArtistName", artist.name);
 
                 startActivity(in);
 
@@ -83,6 +84,10 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outBundle) {
+        super.onSaveInstanceState(outState, outBundle);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,11 +120,11 @@ public class MainActivity extends Activity {
                 SpotifyApi api = new SpotifyApi();
                 SpotifyService spotify = api.getService();
 
-                results  = spotify.searchArtists(params[0]);
+                results = spotify.searchArtists(params[0]);
 
-            }catch (Exception e){
-                Toast.makeText(MainActivity.this,"UnkownHostException! Are You Connected to the Internet?",Toast.LENGTH_SHORT).show();
-                Log.e("Exception",e.toString());
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "UnkownHostException! Are You Connected to the Internet?", Toast.LENGTH_SHORT).show();
+                Log.e("Exception", e.toString());
             }
 
             List<Artist> artistInfo = results.artists.items;
